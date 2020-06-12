@@ -26,9 +26,14 @@ while running:
 
     enemy_choice = 0
 
-    if enemy_choice == 0:
+    if enemy_choice == 0 and enemy.get_hp() > 0:
         dmg = enemy.generate_damage()
         player.take_damage(dmg)
         print("Enemy attacked for:", dmg, "  Your HP:", player.get_hp())
 
-    # running = False
+    if enemy.get_hp() == 0:
+        print(bcolors.OKGREEN + bcolors.BOLD + "You win!" + bcolors.ENDC)
+        running = False
+    elif player.get_hp() == 0:
+        print(bcolors.FAIL + bcolors.BOLD + "You lost!" + bcolors.ENDC)
+        running = False
