@@ -1,11 +1,20 @@
 from classes.game import Person, bcolors
+from classes.magic import Spell
 
-magic = [{"name": "Fire ball", "cost": 10, "dmg": 60},
-         {"name": "Thunder", "cost": 15, "dmg": 80},
-         {"name": "Blizzard", "cost": 12, "dmg": 68}]
+# Create offensive spells
+fireball = Spell("Fireball", 10, 100, "offensive")
+thunder = Spell("Thunder", 11, 110, "offensive")
+blizzard = Spell("Blizzard", 10, 100, "offensive")
+meteor = Spell("Meteor", 20, 200, "offensive")
+earthquake = Spell("Earthquake", 14, 140, "offensive")
 
-player = Person(500, 100, 60, 45, magic)
-enemy = Person(200, 40, 35, 24, magic)
+# Create defensive spells
+cure = Spell("Cure", 12, 120, "defensive")
+powerful_cure = Spell("Powerful cure", 18, 200, "defensive")
+
+# Instantiate People
+player = Person(480, 80, 60, 45, [fireball, thunder, blizzard, meteor, earthquake, cure, powerful_cure])
+enemy = Person(1150, 40, 45, 24, [thunder, earthquake])
 
 running = True
 
@@ -25,17 +34,17 @@ while running:
         print("You attacked for:", dmg, "dmg")
     elif index == 1:
         player.choose_spell()
-        spell_choice = input("Chose spell:")
-        spell_index = int(spell_choice) - 1
+        spell_choice = int(input("Chose spell:")) - 1
+        spell = player.magic[spell_choice]
 
-        if player.get_mp() < player.get_spell_cost(spell_index):
+        if player.get_mp() < spell.get_cost():
             print(bcolors.FAIL + "You don't have enough magic points for this spell" + bcolors.ENDC)
             continue
 
-        magic_dmg = player.generate_spell_damage(spell_index)
-        player.reduce_mp(player.get_spell_cost(spell_index))
+        magic_dmg = spell.generate_damage()
+        player.reduce_mp(spell.get_cost())
         enemy.take_damage(magic_dmg)
-        print(player.get_spell_name(spell_index), "dealt:", magic_dmg, "dmg")
+        print(spell.get_name(), "dealt:", magic_dmg, "dmg")
 
     enemy_choice = 0
 
@@ -48,7 +57,7 @@ while running:
     print("Enemy HP:", bcolors.FAIL + str(enemy.get_hp()) + "/" + str(enemy.get_max_hp()) + bcolors.ENDC)
     print("Enemy MP:", bcolors.FAIL + str(enemy.get_mp()) + "/" + str(enemy.get_max_mp()) + bcolors.ENDC + "\n")
     print("Your HP:", bcolors.OKGREEN + str(player.get_hp()) + "/" + str(player.get_max_hp()) + bcolors.ENDC)
-    print("Your MP:", bcolors.OKGREEN + str(player.get_mp()) + "/" + str(player.get_max_mp()) + bcolors.ENDC)
+    print("Your MP:", bcolors.OKBLUE + str(player.get_mp()) + "/" + str(player.get_max_mp()) + bcolors.ENDC)
 
     if enemy.get_hp() == 0:
         print("\n" + bcolors.OKGREEN + bcolors.BOLD + "You won!" + bcolors.ENDC)
