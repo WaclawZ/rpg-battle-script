@@ -43,8 +43,13 @@ while running:
 
         magic_dmg = spell.generate_damage()
         player.reduce_mp(spell.get_cost())
-        enemy.take_damage(magic_dmg)
-        print(spell.get_name(), "dealt:", magic_dmg, "dmg")
+
+        if spell.get_type() == "offensive":
+            enemy.take_damage(magic_dmg)
+            print(spell.get_name(), "dealt:", magic_dmg, "dmg")
+        elif spell.get_type() == "defensive":
+            player.heal(magic_dmg)
+            print("You have been healed by:", magic_dmg, "hp")
 
     enemy_choice = 0
 
