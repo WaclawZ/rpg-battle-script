@@ -22,7 +22,7 @@ while running:
     if index == 0:
         dmg = player.generate_damage()
         enemy.take_damage(dmg)
-        print("You attacked for:", dmg, "  Enemy HP:", enemy.get_hp())
+        print("You attacked for:", dmg, "dmg")
     elif index == 1:
         player.choose_spell()
         spell_choice = input("Chose spell:")
@@ -35,19 +35,24 @@ while running:
         magic_dmg = player.generate_spell_damage(spell_index)
         player.reduce_mp(player.get_spell_cost(spell_index))
         enemy.take_damage(magic_dmg)
-        print("You attacked for:", magic_dmg, "  You have", player.get_mp(),
-              "magic points left", "  Enemy HP:", enemy.get_hp())
+        print(player.get_spell_name(spell_index), "dealt:", magic_dmg, "dmg")
 
     enemy_choice = 0
 
     if enemy_choice == 0 and enemy.get_hp() > 0:
-        dmg = enemy.generate_damage()
-        player.take_damage(dmg)
-        print("Enemy attacked for:", dmg, "  Your HP:", player.get_hp())
+        enemy_dmg = enemy.generate_damage()
+        player.take_damage(enemy_dmg)
+        print("Enemy attacked for:", enemy_dmg, "dmg")
+
+    print("------------------------------------")
+    print("Enemy HP:", bcolors.FAIL + str(enemy.get_hp()) + "/" + str(enemy.get_max_hp()) + bcolors.ENDC)
+    print("Enemy MP:", bcolors.FAIL + str(enemy.get_mp()) + "/" + str(enemy.get_max_mp()) + bcolors.ENDC + "\n")
+    print("Your HP:", bcolors.OKGREEN + str(player.get_hp()) + "/" + str(player.get_max_hp()) + bcolors.ENDC)
+    print("Your MP:", bcolors.OKGREEN + str(player.get_mp()) + "/" + str(player.get_max_mp()) + bcolors.ENDC)
 
     if enemy.get_hp() == 0:
-        print(bcolors.OKGREEN + bcolors.BOLD + "You won!" + bcolors.ENDC)
+        print("\n" + bcolors.OKGREEN + bcolors.BOLD + "You won!" + bcolors.ENDC)
         running = False
     elif player.get_hp() == 0:
-        print(bcolors.FAIL + bcolors.BOLD + "You lost!" + bcolors.ENDC)
+        print("\n" + bcolors.FAIL + bcolors.BOLD + "You lost!" + bcolors.ENDC)
         running = False
