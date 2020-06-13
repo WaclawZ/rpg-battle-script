@@ -1,5 +1,6 @@
 from classes.game import Person, bcolors
 from classes.magic import Spell
+from classes.inventory import Item
 
 # Create offensive spells
 fireball = Spell("Fireball", 10, 100, "offensive")
@@ -12,27 +13,41 @@ earthquake = Spell("Earthquake", 14, 140, "offensive")
 cure = Spell("Cure", 12, 120, "defensive")
 powerful_cure = Spell("Powerful cure", 18, 200, "defensive")
 
+# Create Items
+potion = Item("Potion", "potion", "Heals 50 HP", 50)
+big_potion = Item("Big potion", "potion", "Heals 100 HP", 100)
+super_potion = Item("Super potion", "potion", "Heals 300 HP", 300)
+elixir = Item("Elixir", "elixir", "Fully restores HP/MP of one party member", 9999)
+mega_elixir = Item("Mega elixir", "elixir", "Fully restores party's HP/MP", 9999)
+
+grenade = Item("Grenade", "attack", "Deals 500 damage", 500)
+
+# Inventory and spellBook
+player_spells = [fireball, thunder, blizzard, meteor, earthquake, cure, powerful_cure]
+player_items = [potion, elixir, grenade]
+enemy_spells = [thunder, earthquake]
+enemy_items = []
+
 # Instantiate People
-player = Person(480, 80, 60, 45, [fireball, thunder, blizzard, meteor, earthquake, cure, powerful_cure])
-enemy = Person(1150, 40, 45, 24, [thunder, earthquake])
+player = Person(480, 80, 60, 45, player_spells, player_items)
+enemy = Person(1150, 40, 45, 24, enemy_spells, enemy_items)
 
 running = True
 
 print(bcolors.FAIL + bcolors.BOLD + "AN ENEMY ATTACKS" + bcolors.ENDC)
 
 while running:
-    index = -1
+    choice = -1
     print("====================================")
-    while index != 0 and index != 1:
+    while choice != 0 and choice != 1 and choice != 2:
         player.choose_action()
-        choice = input("Chose action:")
-        index = int(choice) - 1
+        choice = int(input("Chose action:")) -1
 
-    if index == 0:
+    if choice == 0:
         dmg = player.generate_damage()
         enemy.take_damage(dmg)
         print("You attacked for:", dmg, "dmg")
-    elif index == 1:
+    elif choice == 1:
         player.choose_spell()
         spell_choice = int(input("Chose spell:")) - 1
         spell = player.magic[spell_choice]
@@ -50,6 +65,21 @@ while running:
         elif spell.get_type() == "defensive":
             player.heal(magic_dmg)
             print("You have been healed by:", magic_dmg, "hp")
+    elif choice == 2:
+        player.choose_item()
+        item_choice = int(input("Chose item:")) - 1
+        item = player.items[item_choice]
+
+        if item.get_type() == "potion":
+            player.heal(item.get_prop())
+            print(item.get_name(), "healed you by:", item.get_prop(), "hp")
+        elif item.get_type() == "elixir":
+            player.heal(item.get_prop())
+            player.restore_mp(item.get_prop())
+            print(item.get_name(), "restored your HP and MP")
+        elif item.get_type() == "attack":
+            enemy.take_damage(item.get_prop())
+            print(item.get_name(), "dealt:", item.get_prop(), "dmg")
 
     enemy_choice = 0
 
