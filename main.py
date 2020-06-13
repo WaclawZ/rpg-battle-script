@@ -50,6 +50,10 @@ while running:
     elif choice == 1:
         player.choose_spell()
         spell_choice = int(input("Chose spell:")) - 1
+
+        if spell_choice < 0 or spell_choice >= len(player.magic):
+            continue
+
         spell = player.magic[spell_choice]
 
         if player.get_mp() < spell.get_cost():
@@ -68,6 +72,10 @@ while running:
     elif choice == 2:
         player.choose_item()
         item_choice = int(input("Chose item:")) - 1
+
+        if item_choice < 0 or item_choice >= len(player.items):
+            continue
+
         item = player.items[item_choice]
 
         if item.get_type() == "potion":
