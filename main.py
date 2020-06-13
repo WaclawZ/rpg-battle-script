@@ -24,7 +24,9 @@ grenade = Item("Grenade", "attack", "Deals 500 damage", 500)
 
 # Inventory and spellBook
 player_spells = [fireball, thunder, blizzard, meteor, earthquake, cure, powerful_cure]
-player_items = [potion, elixir, grenade]
+player_items = [{"item": potion, "quantity": 15}, {"item": big_potion, "quantity": 5},
+                {"item": super_potion, "quantity": 5}, {"item": elixir, "quantity": 5},
+                {"item": mega_elixir, "quantity": 2}, {"item": grenade, "quantity": 3}]
 enemy_spells = [thunder, earthquake]
 enemy_items = []
 
@@ -76,7 +78,14 @@ while running:
         if item_choice < 0 or item_choice >= len(player.items):
             continue
 
-        item = player.items[item_choice]
+        item = player.items[item_choice]["item"]
+        quantity = player.items[item_choice]["quantity"]
+
+        if quantity == 0:
+            print(bcolors.FAIL + "You don't have enough " + item.get_name() + "s" + bcolors.ENDC)
+            continue
+
+        player.items[item_choice]["quantity"] = quantity - 1
 
         if item.get_type() == "potion":
             player.heal(item.get_prop())
