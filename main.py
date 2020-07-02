@@ -51,6 +51,9 @@ while running:
     for player in players:
         player.get_stats()
 
+    print("\n")
+    enemy.get_stats()
+
     # Players turn
     for player in players:
         choice = -1
@@ -120,7 +123,6 @@ while running:
         print(bcolors.FAIL + "Enemy attacked for:", enemy_dmg, "dmg" + bcolors.ENDC)
 
     print("------------------------------------")
-    enemy.get_stats()
 
     if enemy.get_hp() == 0:
         print("\n" + bcolors.OKGREEN + bcolors.BOLD + "You won!" + bcolors.ENDC)
