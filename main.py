@@ -107,9 +107,15 @@ while running:
                 player.heal(item.get_prop())
                 print(bcolors.OKGREEN + item.get_name(), "healed you for:", item.get_prop(), "hp" + bcolors.ENDC)
             elif item.get_type() == "elixir":
-                player.heal(item.get_prop())
-                player.restore_mp(item.get_prop())
-                print(bcolors.OKGREEN + item.get_name(), "restored your HP and MP" + bcolors.ENDC)
+                if item.get_name() == "Mega elixir":
+                    for pl in players:
+                        pl.heal(item.get_prop())
+                        pl.restore_mp(item.get_prop())
+                    print(bcolors.OKGREEN + item.get_name(), "restored party HP and MP" + bcolors.ENDC)
+                else:
+                    player.heal(item.get_prop())
+                    player.restore_mp(item.get_prop())
+                    print(bcolors.OKGREEN + item.get_name(), "restored your HP and MP" + bcolors.ENDC)
             elif item.get_type() == "attack":
                 enemy.take_damage(item.get_prop())
                 print(bcolors.FAIL + item.get_name(), "dealt:", item.get_prop(), "dmg" + bcolors.ENDC)
