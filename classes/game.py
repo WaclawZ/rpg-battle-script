@@ -104,9 +104,21 @@ class Person:
         while len(mp_bar) < 10:
             mp_bar += " "
 
+        hp_space = ""
+        hp_space_count = len(str(self.maxHp)) - len(str(self.hp))
+        while hp_space_count > 0:
+            hp_space += " "
+            hp_space_count -= 1
+
+        mp_space = ""
+        mp_space_count = len(str(self.maxMp)) - len(str(self.mp))
+        while mp_space_count > 0:
+            mp_space += " "
+            mp_space_count -= 1
+
         print("                    _________________________           __________ ")
         print(bcolors.BOLD + self.name + ":   " +
-              str(self.hp) + "/" + str(self.maxHp) + " |" + bcolors.OKGREEN + hp_bar + bcolors.ENDC +
-              "|   " + bcolors.BOLD + str(self.mp) + "/" + str(self.maxMp) + " |" + bcolors.OKBLUE +
+              str(self.hp) + "/" + str(self.maxHp) + hp_space + " |" + bcolors.OKGREEN + hp_bar + bcolors.ENDC +
+              "|   " + bcolors.BOLD + str(self.mp) + "/" + str(self.maxMp) + mp_space + " |" + bcolors.OKBLUE +
               mp_bar + bcolors.ENDC + "|")
 
