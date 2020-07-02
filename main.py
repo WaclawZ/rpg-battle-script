@@ -1,3 +1,4 @@
+import random
 from classes.game import Person, bcolors
 from classes.magic import Spell
 from classes.inventory import Item
@@ -122,11 +123,12 @@ while running:
 
     # Enemies turn
     enemy_choice = 0
+    target = random.randrange(0, 3)
 
     if enemy_choice == 0 and enemy.get_hp() > 0:
         enemy_dmg = enemy.generate_damage()
-        player1.take_damage(enemy_dmg)
-        print(bcolors.FAIL + "Enemy attacked for:", enemy_dmg, "dmg" + bcolors.ENDC)
+        players[target].take_damage(enemy_dmg)
+        print(bcolors.FAIL + "Enemy attacked " + players[target].name + " for:", enemy_dmg, "dmg" + bcolors.ENDC)
 
     print("------------------------------------")
 
