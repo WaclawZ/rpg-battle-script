@@ -117,8 +117,8 @@ class Person:
             mp_space_count -= 1
 
         print("                    _________________________           __________ ")
-        print(bcolors.BOLD + self.name + ":   " +
-              str(self.hp) + "/" + str(self.maxHp) + hp_space + " |" + bcolors.OKGREEN + hp_bar + bcolors.ENDC +
-              "|   " + bcolors.BOLD + str(self.mp) + "/" + str(self.maxMp) + mp_space + " |" + bcolors.OKBLUE +
+        print(bcolors.BOLD + self.name + ":   " + hp_space +
+              str(self.hp) + "/" + str(self.maxHp) + " |" + bcolors.OKGREEN + hp_bar + bcolors.ENDC +
+              "|   " + bcolors.BOLD + mp_space + str(self.mp) + "/" + str(self.maxMp) + " |" + bcolors.OKBLUE +
               mp_bar + bcolors.ENDC + "|")
 
