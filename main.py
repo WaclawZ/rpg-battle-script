@@ -35,9 +35,12 @@ enemy_items = []
 player1 = Person("Frodo  ", 375, 40, 50, 32, player_spells, player_items)
 player2 = Person("Gandalf", 520, 99, 40, 28, player_spells, player_items)
 player3 = Person("Boromir", 650, 60, 80, 70, player_spells, player_items)
-enemy = Person("Troll", 2500, 20, 60, 68, enemy_spells, enemy_items)
+enemy1 = Person("Imp  ", 1000, 10, 30, 25, [], [])
+enemy2 = Person("Troll", 2500, 40, 100, 68, enemy_spells, enemy_items)
+enemy3 = Person("Imp  ", 1000, 10, 30, 25, [], [])
 
 players = [player1, player2, player3]
+enemies = [enemy1, enemy2, enemy3]
 
 running = True
 
@@ -53,7 +56,8 @@ while running:
         player.get_stats()
 
     print("\n")
-    enemy.get_stats()
+    for enemy in enemies:
+        enemy.get_stats()
 
     # Players turn
     for player in players:
@@ -64,8 +68,10 @@ while running:
 
         if choice == 0:
             dmg = player.generate_damage()
-            enemy.take_damage(dmg)
-            print(bcolors.FAIL + "You attacked for:", dmg, "dmg" + bcolors.ENDC)
+            enemy_index = player.choose_target(enemies)
+            enemies[enemy_index].take_damage(dmg)
+            print(bcolors.FAIL + "You attacked " + enemies[enemy_index].name.strip() + " for:", dmg,
+                  "dmg" + bcolors.ENDC)
         elif choice == 1:
             player.choose_spell()
             spell_choice = int(input("    Chose spell:")) - 1
@@ -83,8 +89,10 @@ while running:
             player.reduce_mp(spell.get_cost())
 
             if spell.get_type() == "offensive":
-                enemy.take_damage(magic_dmg)
-                print(bcolors.OKBLUE + spell.get_name(), "dealt:", magic_dmg, "dmg" + bcolors.ENDC)
+                enemy_index = player.choose_target(enemies)
+                enemies[enemy_index].take_damage(magic_dmg)
+                print(bcolors.OKBLUE + spell.get_name(), "dealt:", magic_dmg,
+                      "dmg to " + enemies[enemy_index].name + bcolors.ENDC)
             elif spell.get_type() == "defensive":
                 player.heal(magic_dmg)
                 print(bcolors.OKGREEN + "You have been healed by:", magic_dmg, "hp" + bcolors.ENDC)
@@ -118,23 +126,34 @@ while running:
                     player.restore_mp(item.get_prop())
                     print(bcolors.OKGREEN + item.get_name(), "restored your HP and MP" + bcolors.ENDC)
             elif item.get_type() == "attack":
-                enemy.take_damage(item.get_prop())
-                print(bcolors.FAIL + item.get_name(), "dealt:", item.get_prop(), "dmg" + bcolors.ENDC)
+                enemy_index = player.choose_target(enemies)
+                enemies[enemy_index].take_damage(item.get_prop())
+                print(bcolors.FAIL + item.get_name(), "dealt:", item.get_prop(),
+                      "dmg to " + enemies[enemy_index].name + bcolors.ENDC)
 
     # Enemies turn
-    enemy_choice = 0
-    target = random.randrange(0, 3)
+    for enemy in enemies:
+        enemy_choice = 0
+        target = random.randrange(0, 3)
 
-    if enemy_choice == 0 and enemy.get_hp() > 0:
-        enemy_dmg = enemy.generate_damage()
-        players[target].take_damage(enemy_dmg)
-        print(bcolors.FAIL + "Enemy attacked " + players[target].name + " for:", enemy_dmg, "dmg" + bcolors.ENDC)
+        if enemy_choice == 0 and enemy.get_hp() > 0:
+            enemy_dmg = enemy.generate_damage()
+            players[target].take_damage(enemy_dmg)
+            print(bcolors.FAIL + enemy.name.strip() + " attacked " + players[target].name + " for:", enemy_dmg,
+                  "dmg" + bcolors.ENDC)
 
     print("------------------------------------")
 
-    if enemy.get_hp() == 0:
+    enemies_sum_hp = 1
+    for enemy in enemies:
+        enemies_sum_hp += enemy.get_hp()
+    players_sum_hp = 1
+    for player in players:
+        players_sum_hp += player.get_hp()
+
+    if enemies_sum_hp == 0:
         print("\n" + bcolors.OKGREEN + bcolors.BOLD + "You won!" + bcolors.ENDC)
         running = False
-    elif player1.get_hp() == 0:
+    elif players_sum_hp == 0:
         print("\n" + bcolors.FAIL + bcolors.BOLD + "You lost!" + bcolors.ENDC)
         running = False

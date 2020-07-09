@@ -83,6 +83,15 @@ class Person:
             print("        " + str(i) + ".", it.get_name() + ":", it.get_description() + " (x" + str(item["quantity"]) + ")")
             i += 1
 
+    def choose_target(self, enemies):
+        i = 1
+        print("\n" + bcolors.OKBLUE + bcolors.BOLD + "    Enemies" + bcolors.ENDC)
+        for enemy in enemies:
+            print("        " + str(i) + ".", enemy.name)
+            i += 1
+        choice = int(input("    Chose target:")) - 1
+        return choice
+
     def get_stats(self):
         hp_bar = ""
         hp_bar_ticks = (self.hp / self.maxHp) * 100 / 4
