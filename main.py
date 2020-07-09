@@ -134,6 +134,11 @@ while running:
                 print(bcolors.FAIL + item.get_name(), "dealt:", item.get_prop(),
                       "dmg to " + enemies[enemy_index].name + bcolors.ENDC)
 
+    # Remove dead enemies
+    for i, enemy in enumerate(enemies):
+        if enemy.get_hp() == 0:
+            enemies.pop(i)
+
     # Enemies turn
     for enemy in enemies:
         enemy_choice = 0
