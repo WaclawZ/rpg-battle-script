@@ -147,7 +147,7 @@ while running:
         if enemy_choice == 0 and enemy.get_hp() > 0:
             enemy_dmg = enemy.generate_damage()
             players[target].take_damage(enemy_dmg)
-            print(bcolors.FAIL + enemy.name.strip() + " attacked " + players[target].name + " for:", enemy_dmg,
+            print(bcolors.FAIL + enemy.name.strip() + " attacked " + players[target].name.strip() + " for:", enemy_dmg,
                   "dmg" + bcolors.ENDC)
 
     print("------------------------------------")
