@@ -61,6 +61,9 @@ while running:
 
     # Players turn
     for player in players:
+        if player.get_hp() == 0:
+            continue
+
         choice = -1
         while choice != 0 and choice != 1 and choice != 2:
             player.choose_action()
